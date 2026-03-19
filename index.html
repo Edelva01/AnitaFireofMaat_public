@@ -84,7 +84,7 @@
       :root {
         --bar-height: 0px;
         --frame-bleed: 14px;
-        --frame-scale: 1.22;
+        --frame-scale: 1.08;
       }
 
       .topbar {
@@ -133,5 +133,35 @@
       <a href="https://fireofmaat.wixsite.com/my-site-1" target="_blank" rel="noopener noreferrer">the original site here</a>.
     </p>
   </noscript>
+
+  <script>
+    (function () {
+      var root = document.documentElement;
+      var mobileQuery = window.matchMedia("(max-width: 1024px), (pointer: coarse)");
+
+      function updateFrameScale() {
+        if (!mobileQuery.matches) {
+          root.style.setProperty("--frame-scale", "1");
+          return;
+        }
+
+        var viewportWidth = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0);
+        if (!viewportWidth) {
+          return;
+        }
+
+        var dynamicScale = 430 / viewportWidth;
+        var clampedScale = Math.min(1.35, Math.max(1.04, dynamicScale));
+        root.style.setProperty("--frame-scale", clampedScale.toFixed(3));
+      }
+
+      updateFrameScale();
+      window.addEventListener("resize", updateFrameScale, { passive: true });
+
+      if (window.visualViewport) {
+        window.visualViewport.addEventListener("resize", updateFrameScale, { passive: true });
+      }
+    })();
+  </script>
 </body>
 </html>
