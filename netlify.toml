@@ -1,14 +1,2 @@
 [build]
   publish = "public"
-
-[[redirects]]
-  from = "/"
-  to = "https://turtlebackrobotics.com/"
-  status = 200
-  force = true
-
-[[redirects]]
-  from = "/*"
-  to = "https://turtlebackrobotics.com/"
-  status = 200
-  force = true
