@@ -137,6 +137,7 @@
   <script>
     (function () {
       var root = document.documentElement;
+      var frame = document.querySelector('iframe');
       var mobileQuery = window.matchMedia("(max-width: 1024px), (pointer: coarse)");
 
       function updateFrameScale() {
@@ -144,30 +145,40 @@
           root.style.setProperty("--bar-height", "52px");
           root.style.setProperty("--frame-bleed", "0px");
           root.style.setProperty("--frame-scale", "1");
+          frame.style.width = '';
+          frame.style.margin = '';
           return;
         }
 
         var viewportWidth = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0);
         var viewportHeight = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0);
-        if (!viewportWidth) {
-          return;
-        }
-
-        var isPortrait = viewportHeight >= viewportWidth;
-        var baseScale = isPortrait ? 1.40 : 1.68;
-        var widthAdjustment = viewportWidth / 390;
-        var dynamicScale = baseScale * widthAdjustment;
-        var clampedScale = Math.min(2.10, Math.max(1.08, dynamicScale));
-        var bleedPx = Math.min(28, Math.max(12, Math.round((clampedScale - 1) * 40)));
+        if (!viewportWidth) return;
 
         root.style.setProperty("--bar-height", "0px");
-        root.style.setProperty("--frame-bleed", bleedPx + "px");
-        root.style.setProperty("--frame-scale", clampedScale.toFixed(3));
+        var isPortrait = viewportHeight >= viewportWidth;
+
+        if (isPortrait) {
+          // Portrait: iframe fills full viewport width naturally.
+          // Small scale zooms past Wix side margins without clipping real content.
+          frame.style.width = '';
+          frame.style.margin = '';
+          root.style.setProperty("--frame-bleed", "0px");
+          root.style.setProperty("--frame-scale", "1.08");
+        } else {
+          // Landscape: force iframe to a portrait-width so Wix renders its mobile
+          // layout (narrow column), then scale it up to fill the landscape viewport.
+          var narrowWidth = Math.round(viewportHeight * 0.75);
+          var scale = viewportWidth / narrowWidth;
+          frame.style.width = narrowWidth + 'px';
+          frame.style.margin = '0 auto';
+          root.style.setProperty("--frame-bleed", "0px");
+          root.style.setProperty("--frame-scale", scale.toFixed(3));
+        }
       }
 
       updateFrameScale();
       window.addEventListener("orientationchange", function () {
-        setTimeout(updateFrameScale, 120);
+        setTimeout(updateFrameScale, 200);
       }, { passive: true });
       window.addEventListener("resize", updateFrameScale, { passive: true });
       window.addEventListener("pageshow", updateFrameScale, { passive: true });
