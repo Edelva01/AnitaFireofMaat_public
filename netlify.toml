@@ -2,6 +2,12 @@
   publish = "public"
 
 [[redirects]]
+  from = "/"
+  to = "https://fireofmaat.wixsite.com/my-site-1/"
+  status = 200
+  force = true
+
+[[redirects]]
   from = "/*"
   to = "https://fireofmaat.wixsite.com/my-site-1/:splat"
   status = 200
