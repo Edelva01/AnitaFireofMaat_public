@@ -11,6 +11,7 @@
       color-scheme: light;
       --bar-height: 52px;
       --frame-bleed: 0px;
+      --frame-scale: 1;
     }
 
     * {
@@ -69,7 +70,8 @@
       height: calc(100% + var(--bar-height));
       border: 0;
       outline: 0;
-      transform: translateY(calc(-1 * var(--bar-height)));
+      transform: translateY(calc(-1 * var(--bar-height))) scale(var(--frame-scale));
+      transform-origin: top center;
       background: #ffffff;
     }
 
@@ -81,7 +83,8 @@
     @media (max-width: 1024px), (pointer: coarse) {
       :root {
         --bar-height: 0px;
-        --frame-bleed: 8px;
+        --frame-bleed: 14px;
+        --frame-scale: 1.22;
       }
 
       .topbar {
@@ -93,9 +96,7 @@
       }
 
       iframe {
-        width: 132vw;
-        max-width: none;
-        margin-left: -16vw;
+        width: 100%;
       }
     }
 
