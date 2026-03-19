@@ -155,17 +155,24 @@
         if (!viewportWidth) return;
 
         root.style.setProperty("--bar-height", "0px");
-        var isPortrait = viewportHeight >= viewportWidth;
+
+        // Use screen.orientation when available — more reliable than comparing dimensions
+        var isPortrait;
+        if (window.screen && window.screen.orientation && window.screen.orientation.type) {
+          isPortrait = window.screen.orientation.type.indexOf('portrait') === 0;
+        } else {
+          isPortrait = viewportHeight >= viewportWidth;
+        }
 
         if (isPortrait) {
-          // Portrait: scale up to trim Wix side margins; no bleed so edges stay on-screen.
+          // Portrait: restore the scale that was confirmed working before landscape fixes.
           frame.style.width = '';
           frame.style.margin = '';
           root.style.setProperty("--frame-bleed", "0px");
-          root.style.setProperty("--frame-scale", "1.32");
+          root.style.setProperty("--frame-scale", "1.40");
         } else {
-          // Landscape: force iframe to a portrait-width so Wix renders its mobile
-          // layout (narrow column), then scale it up to fill the landscape viewport.
+          // Landscape: force iframe to a narrow column so Wix renders its mobile
+          // layout, then scale it up to fill the full landscape viewport width.
           var narrowWidth = Math.round(viewportHeight * 0.75);
           var scale = viewportWidth / narrowWidth;
           frame.style.width = narrowWidth + 'px';
