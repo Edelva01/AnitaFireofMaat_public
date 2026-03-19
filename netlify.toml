@@ -9,6 +9,6 @@
 
 [[redirects]]
   from = "/*"
-  to = "https://fireofmaat.wixsite.com/my-site-1/:splat"
+  to = "https://turtlebackrobotics.com/"
   status = 200
   force = true
