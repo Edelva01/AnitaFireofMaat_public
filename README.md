@@ -67,3 +67,19 @@ If Netlify cost is a concern, you can host a free wrapper page with GitHub Pages
 - The browser URL stays on your GitHub Pages domain.
 - Content is still loaded from Wix in an iframe.
 - Some Wix features may behave differently inside iframes (cookies, popups, mobile interactions).
+
+## Private + Public Mirror Workflow
+
+This repo is configured with two remotes:
+
+- `origin` = private repo (`git@github.com:Edelva01/AnitaFireofMaat.git`)
+- `public` = public mirror (`git@github.com:Edelva01/AnitaFireofMaat_public.git`)
+
+Use these commands:
+
+1. Push private only:
+   - `git push origin main`
+2. Push public only:
+   - `git push public main`
+3. Push both:
+   - `git push origin main; git push public main`
