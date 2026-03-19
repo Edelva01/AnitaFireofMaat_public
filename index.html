@@ -7,195 +7,32 @@
   <link rel="icon" type="image/png" href="assets/icon.png" />
   <link rel="apple-touch-icon" href="assets/icon.png" />
   <style>
-    :root {
-      color-scheme: light;
-      --bar-height: 52px;
-      --frame-bleed: 0px;
-      --frame-scale: 1;
-    }
+    * { box-sizing: border-box; }
 
-    * {
-      box-sizing: border-box;
-    }
-
-    html,
-    body {
+    html, body {
       margin: 0;
-      width: 100vw;
-      height: 100dvh;
+      width: 100%;
+      height: 100%;
       overflow: hidden;
-      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-      background: #0f172a;
-      color: #f8fafc;
-    }
-
-    .topbar {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      z-index: 10;
-      height: var(--bar-height);
-      display: flex;
-      align-items: center;
-      justify-content: flex-end;
-      padding: 0 14px;
-      white-space: nowrap;
-      border-bottom: 1px solid rgba(148, 163, 184, 0.35);
-      background: rgba(15, 23, 42, 0.96);
-    }
-
-    .open-link {
-      color: #93c5fd;
-      text-decoration: none;
-      font-size: 13px;
-    }
-
-    .open-link:hover {
-      text-decoration: underline;
-    }
-
-    .frame-wrap {
-      position: fixed;
-      inset: calc(-1 * var(--frame-bleed));
-      width: calc(100vw + (2 * var(--frame-bleed)));
-      height: calc(100dvh + (2 * var(--frame-bleed)));
-      overflow: hidden;
-      z-index: 1;
     }
 
     iframe {
       display: block;
       width: 100%;
-      height: calc(100% + var(--bar-height));
+      height: 100%;
       border: 0;
-      outline: 0;
-      transform: translateY(calc(-1 * var(--bar-height))) scale(var(--frame-scale));
-      transform-origin: top center;
-      background: #ffffff;
-    }
-
-    .fallback {
-      margin: 16px;
-      font-size: 14px;
-    }
-
-    @media (max-width: 1024px), (pointer: coarse) {
-      :root {
-        --bar-height: 0px;
-        --frame-bleed: 14px;
-        --frame-scale: 1.08;
-      }
-
-      .topbar {
-        display: none;
-      }
-
-      .open-link {
-        font-size: 12px;
-      }
-
-      iframe {
-        width: 100%;
-      }
-    }
-
-    @supports not (height: 100dvh) {
-      html,
-      body,
-      .frame-wrap {
-        height: 100vh;
-      }
-
-      iframe {
-        height: calc(100vh + var(--bar-height));
-      }
     }
   </style>
 </head>
 <body>
-  <header class="topbar">
-    <a class="open-link" href="https://fireofmaat.wixsite.com/my-site-1" target="_blank" rel="noopener noreferrer">Open original site</a>
-  </header>
-
-  <main class="frame-wrap">
-    <iframe
-      src="https://fireofmaat.wixsite.com/my-site-1"
-      title="Fire of Maat"
-      loading="eager"
-      allowfullscreen
-    ></iframe>
-  </main>
-
-  <noscript>
-    <p class="fallback">
-      JavaScript is required for best experience. You can still visit
-      <a href="https://fireofmaat.wixsite.com/my-site-1" target="_blank" rel="noopener noreferrer">the original site here</a>.
-    </p>
-  </noscript>
+  <iframe
+    src="https://fireofmaat.wixsite.com/my-site-1"
+    title="Fire of Maat"
+    loading="eager"
+    allowfullscreen
+  ></iframe>
 
   <script>
-    (function () {
-      var root = document.documentElement;
-      var frame = document.querySelector('iframe');
-      var mobileQuery = window.matchMedia("(max-width: 1024px), (pointer: coarse)");
-
-      function updateFrameScale() {
-        if (!mobileQuery.matches) {
-          root.style.setProperty("--bar-height", "52px");
-          root.style.setProperty("--frame-bleed", "0px");
-          root.style.setProperty("--frame-scale", "1");
-          frame.style.width = '';
-          frame.style.margin = '';
-          return;
-        }
-
-        var viewportWidth = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0);
-        var viewportHeight = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0);
-        if (!viewportWidth) return;
-
-        root.style.setProperty("--bar-height", "0px");
-
-        // Use screen.orientation when available — more reliable than comparing dimensions
-        var isPortrait;
-        if (window.screen && window.screen.orientation && window.screen.orientation.type) {
-          isPortrait = window.screen.orientation.type.indexOf('portrait') === 0;
-        } else {
-          isPortrait = viewportHeight >= viewportWidth;
-        }
-
-        if (isPortrait) {
-          // Portrait: crop a fixed 50px of Wix's side margins per side, scaled to viewport.
-          // Formula: viewportWidth / (viewportWidth - totalCrop) adapts to any phone width.
-          var totalCrop = 60; // 30px per side
-          var portraitScale = viewportWidth / (viewportWidth - totalCrop);
-          frame.style.width = '';
-          frame.style.margin = '';
-          root.style.setProperty("--frame-bleed", "0px");
-          root.style.setProperty("--frame-scale", portraitScale.toFixed(3));
-        } else {
-          // Landscape: force iframe to a narrow column so Wix renders its mobile
-          // layout, then scale it up to fill the full landscape viewport width.
-          var narrowWidth = Math.round(viewportHeight * 0.75);
-          var scale = viewportWidth / narrowWidth;
-          frame.style.width = narrowWidth + 'px';
-          frame.style.margin = '0 auto';
-          root.style.setProperty("--frame-bleed", "0px");
-          root.style.setProperty("--frame-scale", scale.toFixed(3));
-        }
-      }
-
-      updateFrameScale();
-      window.addEventListener("orientationchange", function () {
-        setTimeout(updateFrameScale, 200);
-      }, { passive: true });
-      window.addEventListener("resize", updateFrameScale, { passive: true });
-      window.addEventListener("pageshow", updateFrameScale, { passive: true });
-
-      if (window.visualViewport) {
-        window.visualViewport.addEventListener("resize", updateFrameScale, { passive: true });
-      }
-    })();
   </script>
 </body>
 </html>
