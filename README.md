@@ -42,3 +42,28 @@ This is a `200` rewrite (reverse proxy), not a browser redirect.
 - Ensure your use complies with Wix terms and content ownership rules.
 
 # AnitaFireofMaat
+
+## Free Option: GitHub Pages Iframe Wrapper
+
+If Netlify cost is a concern, you can host a free wrapper page with GitHub Pages.
+
+### Files used
+
+- `index.html`: iframe wrapper page
+- `.nojekyll`: disables Jekyll processing
+
+### Enable GitHub Pages
+
+1. Push the latest changes to `main`.
+2. In GitHub, open the repo settings.
+3. Go to **Pages**.
+4. Under **Build and deployment**, choose:
+   - **Source**: Deploy from a branch
+   - **Branch**: `main` and folder `/ (root)`
+5. Save and wait for GitHub Pages URL to appear.
+
+### Important Notes
+
+- The browser URL stays on your GitHub Pages domain.
+- Content is still loaded from Wix in an iframe.
+- Some Wix features may behave differently inside iframes (cookies, popups, mobile interactions).
