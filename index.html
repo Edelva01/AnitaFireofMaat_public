@@ -165,11 +165,14 @@
         }
 
         if (isPortrait) {
-          // Portrait: restore the scale that was confirmed working before landscape fixes.
+          // Portrait: crop a fixed 50px of Wix's side margins per side, scaled to viewport.
+          // Formula: viewportWidth / (viewportWidth - totalCrop) adapts to any phone width.
+          var totalCrop = 100; // 50px per side
+          var portraitScale = viewportWidth / (viewportWidth - totalCrop);
           frame.style.width = '';
           frame.style.margin = '';
           root.style.setProperty("--frame-bleed", "0px");
-          root.style.setProperty("--frame-scale", "1.40");
+          root.style.setProperty("--frame-scale", portraitScale.toFixed(3));
         } else {
           // Landscape: force iframe to a narrow column so Wix renders its mobile
           // layout, then scale it up to fill the full landscape viewport width.
