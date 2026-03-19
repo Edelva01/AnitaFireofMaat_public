@@ -21,6 +21,7 @@
       width: 100%;
       height: 100%;
       border: 0;
+      transform-origin: top center;
     }
   </style>
 </head>
@@ -33,6 +34,32 @@
   ></iframe>
 
   <script>
+    (function () {
+      var frame = document.querySelector('iframe');
+
+      function applyPortraitScale() {
+        var isPortrait = window.screen && window.screen.orientation
+          ? window.screen.orientation.type.indexOf('portrait') === 0
+          : window.innerHeight >= window.innerWidth;
+
+        if (isPortrait) {
+          // Scale iframe to trim Wix's side margins and fill phone width.
+          // Crop 70px total (35px per side) relative to current viewport width.
+          var vw = document.documentElement.clientWidth || window.innerWidth;
+          var scale = vw / (vw - 70);
+          frame.style.transform = 'scale(' + scale.toFixed(3) + ')';
+        } else {
+          // Landscape: no adjustment — let the browser handle it naturally.
+          frame.style.transform = '';
+        }
+      }
+
+      applyPortraitScale();
+      window.addEventListener('orientationchange', function () {
+        setTimeout(applyPortraitScale, 150);
+      }, { passive: true });
+      window.addEventListener('resize', applyPortraitScale, { passive: true });
+    })();
   </script>
 </body>
 </html>
