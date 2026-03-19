@@ -7,6 +7,7 @@
   <style>
     :root {
       color-scheme: light;
+      --banner-height: 52px;
     }
 
     * {
@@ -25,7 +26,14 @@
 
     .frame-wrap {
       width: 100%;
-      height: 100%;
+      height: calc(100% - var(--banner-height));
+    }
+
+    .top-banner {
+      height: var(--banner-height);
+      width: 100%;
+      border-bottom: 1px solid rgba(148, 163, 184, 0.35);
+      background: rgba(15, 23, 42, 0.96);
     }
 
     iframe {
@@ -44,6 +52,8 @@
   </style>
 </head>
 <body>
+  <header class="top-banner" aria-hidden="true"></header>
+
   <main class="frame-wrap">
     <iframe
       src="https://fireofmaat.wixsite.com/my-site-1"
