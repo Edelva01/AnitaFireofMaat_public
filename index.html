@@ -167,7 +167,7 @@
         if (isPortrait) {
           // Portrait: crop a fixed 50px of Wix's side margins per side, scaled to viewport.
           // Formula: viewportWidth / (viewportWidth - totalCrop) adapts to any phone width.
-          var totalCrop = 100; // 50px per side
+          var totalCrop = 60; // 30px per side
           var portraitScale = viewportWidth / (viewportWidth - totalCrop);
           frame.style.width = '';
           frame.style.margin = '';
