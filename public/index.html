@@ -24,16 +24,22 @@
       color: #f8fafc;
     }
 
-    .frame-wrap {
-      width: 100%;
-      height: calc(100% - var(--banner-height));
-    }
-
     .top-banner {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 10;
       height: var(--banner-height);
       width: 100%;
       border-bottom: 1px solid rgba(148, 163, 184, 0.35);
       background: rgba(15, 23, 42, 0.96);
+      pointer-events: none;
+    }
+
+    .frame-wrap {
+      position: fixed;
+      inset: 0;
+      z-index: 1;
     }
 
     iframe {
