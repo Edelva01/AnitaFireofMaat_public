@@ -42,28 +42,41 @@
     (function () {
       var frame = document.querySelector('iframe');
 
-      function applyPortraitScale() {
+      // ─── PORTRAIT ────────────────────────────────────────────────────────────
+      // Edit ONLY this function to adjust portrait behaviour.
+      // Changes here have zero effect on landscape.
+      function applyPortrait() {
+        var vw = document.documentElement.clientWidth || window.innerWidth;
+        var scale = vw / (vw - 70); // crops ~35px of Wix margin per side
+        frame.style.transform = 'scale(' + scale.toFixed(3) + ')';
+      }
+
+      // ─── LANDSCAPE ───────────────────────────────────────────────────────────
+      // Edit ONLY this function to adjust landscape behaviour.
+      // Changes here have zero effect on portrait.
+      function applyLandscape() {
+        frame.style.transform = ''; // no adjustment — browser handles it naturally
+      }
+
+      // ─── ROUTER ──────────────────────────────────────────────────────────────
+      // Detects orientation and calls the matching function. Do not edit this.
+      function route() {
         var isPortrait = window.screen && window.screen.orientation
           ? window.screen.orientation.type.indexOf('portrait') === 0
           : window.innerHeight >= window.innerWidth;
 
         if (isPortrait) {
-          // Scale iframe to trim Wix's side margins and fill phone width.
-          // Crop 70px total (35px per side) relative to current viewport width.
-          var vw = document.documentElement.clientWidth || window.innerWidth;
-          var scale = vw / (vw - 70);
-          frame.style.transform = 'scale(' + scale.toFixed(3) + ')';
+          applyPortrait();
         } else {
-          // Landscape: no adjustment — let the browser handle it naturally.
-          frame.style.transform = '';
+          applyLandscape();
         }
       }
 
-      applyPortraitScale();
+      route();
       window.addEventListener('orientationchange', function () {
-        setTimeout(applyPortraitScale, 150);
+        setTimeout(route, 150);
       }, { passive: true });
-      window.addEventListener('resize', applyPortraitScale, { passive: true });
+      window.addEventListener('resize', route, { passive: true });
     })();
   </script>
 </body>
