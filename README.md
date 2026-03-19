@@ -11,7 +11,6 @@ The root page embeds Wix inside an iframe so your GitHub Pages URL stays visible
 ## Files
 
 - `index.html`: root iframe wrapper (GitHub Pages)
-- `public/index.html`: Netlify wrapper copy (optional)
 - `.nojekyll`: disables Jekyll processing on GitHub Pages
 
 ## Deploy on GitHub Pages
