@@ -141,22 +141,36 @@
 
       function updateFrameScale() {
         if (!mobileQuery.matches) {
+          root.style.setProperty("--bar-height", "52px");
+          root.style.setProperty("--frame-bleed", "0px");
           root.style.setProperty("--frame-scale", "1");
           return;
         }
 
         var viewportWidth = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0);
+        var viewportHeight = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0);
         if (!viewportWidth) {
           return;
         }
 
-        var dynamicScale = 430 / viewportWidth;
-        var clampedScale = Math.min(1.35, Math.max(1.04, dynamicScale));
+        var isPortrait = viewportHeight >= viewportWidth;
+        var baseScale = isPortrait ? 1.40 : 1.14;
+        var widthAdjustment = 390 / viewportWidth;
+        var dynamicScale = baseScale * widthAdjustment;
+        var clampedScale = Math.min(1.58, Math.max(1.08, dynamicScale));
+        var bleedPx = Math.min(28, Math.max(12, Math.round((clampedScale - 1) * 40)));
+
+        root.style.setProperty("--bar-height", "0px");
+        root.style.setProperty("--frame-bleed", bleedPx + "px");
         root.style.setProperty("--frame-scale", clampedScale.toFixed(3));
       }
 
       updateFrameScale();
+      window.addEventListener("orientationchange", function () {
+        setTimeout(updateFrameScale, 120);
+      }, { passive: true });
       window.addEventListener("resize", updateFrameScale, { passive: true });
+      window.addEventListener("pageshow", updateFrameScale, { passive: true });
 
       if (window.visualViewport) {
         window.visualViewport.addEventListener("resize", updateFrameScale, { passive: true });
