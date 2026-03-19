@@ -155,9 +155,9 @@
 
         var isPortrait = viewportHeight >= viewportWidth;
         var baseScale = isPortrait ? 1.40 : 1.68;
-        var widthAdjustment = 390 / viewportWidth;
+        var widthAdjustment = viewportWidth / 390;
         var dynamicScale = baseScale * widthAdjustment;
-        var clampedScale = Math.min(1.75, Math.max(1.08, dynamicScale));
+        var clampedScale = Math.min(2.10, Math.max(1.08, dynamicScale));
         var bleedPx = Math.min(28, Math.max(12, Math.round((clampedScale - 1) * 40)));
 
         root.style.setProperty("--bar-height", "0px");
