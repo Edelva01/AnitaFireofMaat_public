@@ -2,7 +2,7 @@
 
 This project uses a GitHub Pages iframe wrapper for:
 
-- `https://fireofmaat.wixsite.com/my-site-1`
+- `https://fireofmaat.wixsite.com/maat`
 
 ## How It Works
 
